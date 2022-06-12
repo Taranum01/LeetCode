@@ -2,7 +2,7 @@ class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
         
-        vector<int> mp(256, -1);
+        vector<int> mp(256, -1); 
         
         int left=0;
         int right=0;
