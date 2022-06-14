@@ -12,7 +12,7 @@ class Solution {
 public:
     
    struct cmp{
-    bool operator()(ListNode* a, const ListNode* b)
+    bool operator()(ListNode* a, ListNode* b)
     {
         return a->val > b->val;
     }
@@ -27,7 +27,8 @@ public:
      
     ListNode temp(0);
     ListNode *node = &temp;
-    while (q.size()){
+     
+    while (!q.empty()){
         ListNode *t = q.top();
         q.pop();
         node->next = t;
