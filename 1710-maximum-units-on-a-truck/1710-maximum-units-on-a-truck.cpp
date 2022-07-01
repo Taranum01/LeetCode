@@ -1,6 +1,6 @@
 class Solution {
 public:
-    // comparator function to sort in vector w.r.t no. of units per boxes in descending order
+    
     static bool compare(vector<int> v1, vector<int> v2)
     {
         return v1[1]>v2[1];
