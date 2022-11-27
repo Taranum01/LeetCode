@@ -23,7 +23,7 @@ public:
             
         if(i+2<nums.size() && nums[i+1]==nums[i]+1 && nums[i+2]== nums[i]+2)
         {
-            if(func(nums, i+3, dp)) return true;
+            if(func(nums, i+3, dp)) return dp[i]= true;
         }
             return dp[i]= false;
     }
