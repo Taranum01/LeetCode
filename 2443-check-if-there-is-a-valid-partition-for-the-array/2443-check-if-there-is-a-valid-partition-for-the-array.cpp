@@ -1,30 +1,38 @@
 class Solution {
 public:
-    bool validPartition(vector<int>& nums) {
+
+    int n;
+    int dp[100001];
+    bool solve(vector<int>& nums, int i) {
         
-        vector<int>dp(nums.size(), -1);
-        return func(nums, 0, dp);
+        if(i >= n)
+            return true;
+        
+        if(dp[i] != -1)
+            return dp[i];
+        
+        bool res = false;
+        
+        if(i+1 < n && nums[i] == nums[i+1])
+            res |= solve(nums, i+2);
+        
+        if(i+2 < n && nums[i] == nums[i+1] && nums[i+1] == nums[i+2])
+            res |= solve(nums, i+3);
+        
+        if(i+2 < n && nums[i+1] - nums[i] == 1 && nums[i+2] - nums[i+1] == 1)
+            res |= solve(nums, i+3);
+        
+        return dp[i] = res;
+        
     }
-        bool func(vector<int> &nums, int i, vector<int>&dp){
-            
-            if(i==nums.size())
-                return true;
-            if(dp[i]!=-1) return dp[i];
-            
-            if(i+1<nums.size() && nums[i+1]==nums[i]){
-                
-                if(func(nums, i+2, dp)) return dp[i]= true;
-                
-                if(i+2<nums.size() && nums[i+2]==nums[i]){
-                    
-                if(func(nums, i+3, dp)) return dp[i]= true;   
-            }      
-        }
-            
-        if(i+2<nums.size() && nums[i+1]==nums[i]+1 && nums[i+2]== nums[i]+2)
-        {
-            if(func(nums, i+3, dp)) return dp[i]= true;
-        }
-            return dp[i]= false;
+    
+    bool validPartition(vector<int>& nums) {
+
+        n = nums.size();
+        
+        memset(dp, -1, sizeof(dp));
+        
+        return solve(nums, 0);
+        
     }
 };
