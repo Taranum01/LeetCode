@@ -1,52 +1,49 @@
 class Solution {
 public:
-    typedef pair<int, char> P;
-    
     string reorganizeString(string s) {
-
+        
         int n = s.length();
         
         vector<int> count(26, 0);
+
+        int maxFreq   = 0;
+
+        char maxFreqCh;
+
         for(char &ch : s) {
             count[ch-'a']++;
-
+            
+            if(count[ch-'a'] > maxFreq) {
+                maxFreq = count[ch-'a'];
+                maxFreqCh = ch;
+            }
+            
             if(count[ch-'a'] > (n+1)/2)
                 return "";
         }
-        
-        priority_queue<P, vector<P>> pq;
-        for(char ch = 'a'; ch <= 'z'; ch++) {
-            if(count[ch-'a'] > 0) {
-                pq.push({count[ch-'a'], ch});
 
-            }
-         }
+        string res = s;
         
-        string res = "";
-        
-        while(pq.size() >= 2) {
-            auto P1 = pq.top(); 
-            pq.pop();
-            
-            auto P2 = pq.top();
-            pq.pop();
-            
-            res.push_back(P1.second);
-            res.push_back(P2.second);
-            
-            P1.first--;
-            P2.first--;
-            
-            if(P1.first > 0)
-                pq.push(P1);
-            
-            if(P2.first > 0)
-                pq.push(P2);
+        int idx = 0;
+
+        while (count[maxFreqCh-'a'] != 0) {
+            res[idx ] = maxFreqCh;
+            idx += 2;
+            count[maxFreqCh-'a']--;
         }
-        
-        if(!pq.empty())
-            res.push_back(pq.top().second);
-        
+
+        for (char ch = 'a'; ch <= 'z'; ch++) {
+            
+            while (count[ch-'a'] > 0) {
+                if (idx >= n) {
+                    idx = 1;
+                }
+                res[idx] = ch;
+                idx += 2;
+                count[ch-'a']--;
+            }
+        }
+
         return res;
     }
 };
