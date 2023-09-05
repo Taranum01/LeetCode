@@ -20,48 +20,46 @@ public:
 
         if(!head)
             return NULL;
-
-        map<Node*, Node*> mp;
-
+        
         Node* curr = head;
-        Node* prev = NULL;
-        Node* newHead = NULL;
-
+        
         while(curr) {
 
-            Node* temp = new Node(curr->val);
-            mp[curr] = temp;
+            Node* currNext = curr->next;
+            curr->next = new Node(curr->val);
+            curr->next->next = currNext;
+            curr = currNext;
 
-            if(newHead == NULL) {
-
-                newHead = temp;
-                prev = newHead;
-
-            } else {
-
-                prev->next = temp;
-                prev = temp;
-
-            }
-            curr = curr->next;
         }
         
-        curr = head;
-        Node* newCurr = newHead;
+        //deep copy of random pointers
 
-        while(curr) {
+        curr = head;
+
+        while(curr && curr->next) {
 
             if(curr->random == NULL) {
-                newCurr->random = NULL;
-
+                curr->next->random = NULL;
             } else {
-                newCurr->random = mp[curr->random];
+                curr->next->random = curr->random->next;
             }
-            
-            newCurr = newCurr->next;
-            curr = curr->next;
+            curr = curr->next->next;
         }
         
-        return newHead;
+        
+        Node* newHead = head->next;
+        Node* newCurr = newHead;
+        curr          = head;
+
+        while(curr && newCurr) {
+
+            curr->next    = curr->next ? curr->next->next : NULL;
+            newCurr->next = newCurr->next ? newCurr->next->next : NULL;
+            
+            curr = curr->next;
+            newCurr = newCurr->next;
+        }
+       
+        return newHead;        
     }
 };
