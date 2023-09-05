@@ -13,50 +13,55 @@ public:
     }
 };
 */
+
 class Solution {
 public:
     Node* copyRandomList(Node* head) {
-        Node *iter = head; 
-          Node *front = head;
 
-         
-          while (iter!= NULL) {
-            front = iter->next;
+        if(!head)
+            return NULL;
 
-            Node *copy = new Node(iter->val);
-            iter->next = copy;
-            copy->next = front;
+        map<Node*, Node*> mp;
 
-            iter= front;
-          }
+        Node* curr = head;
+        Node* prev = NULL;
+        Node* newHead = NULL;
 
-          
-          iter = head;
-          while (iter != NULL) {
-            if (iter->random != NULL) {
-              iter->next->random = iter->random->next;
+        while(curr) {
+
+            Node* temp = new Node(curr->val);
+            mp[curr] = temp;
+
+            if(newHead == NULL) {
+
+                newHead = temp;
+                prev = newHead;
+
+            } else {
+
+                prev->next = temp;
+                prev = temp;
+
             }
-            iter= iter->next->next;
-          }
+            curr = curr->next;
+        }
+        
+        curr = head;
+        Node* newCurr = newHead;
 
-          
-          iter = head;
-          Node *pseudoHead = new Node(0);
-          Node *copy = pseudoHead;
+        while(curr) {
 
-          while (iter != NULL) {
-            front= iter->next->next;
+            if(curr->random == NULL) {
+                newCurr->random = NULL;
 
+            } else {
+                newCurr->random = mp[curr->random];
+            }
             
-            copy->next=iter->next;
-
-           
-            iter->next=front;
-              
-            copy= copy -> next; 
-            iter= front;
-          }
-
-          return pseudoHead->next;
+            newCurr = newCurr->next;
+            curr = curr->next;
+        }
+        
+        return newHead;
     }
 };
