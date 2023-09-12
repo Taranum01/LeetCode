@@ -1,29 +1,24 @@
 class Solution {
 public:
-    
     int minDeletions(string s) {
-        
-        vector<int> v(26); 
-        
-        for(auto ele : s){ 
-            v[ele - 'a']++; 
+
+        unordered_set<int> st;
+        int freq[26] = {0};
+      
+        for(char &ch : s) {
+            freq[ch-'a']++;
         }
         
-        sort(v.begin(),v.end(), greater<int>());
-        
-        int max_f = v[0];
-        int ans=0;
-        
-        for(auto freq : v) {
-            if(freq > max_f)
-            {
-                if(max_f>0)
-                    ans+=(freq-max_f); 
-                else
-                    ans+=freq;
+        int res = 0;
+        for(int i=0; i<26; i++) {
+            
+            while(freq[i] > 0 && st.find(freq[i]) != st.end()) {
+                freq[i]--;
+                res++;
             }
-            max_f=min(max_f-1,freq-1); 
+            st.insert(freq[i]);
         }
-        return ans;
+        
+        return res;
     }
 };
