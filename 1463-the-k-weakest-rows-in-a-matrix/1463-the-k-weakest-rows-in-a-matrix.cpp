@@ -4,7 +4,7 @@ public:
     typedef pair<int, int> P;
     
     int binarySearch(vector<int>& arr, int l, int r) {
-
+        
         int mid;
         int res = -1;
         while(l <= r) {
@@ -18,29 +18,38 @@ public:
             }
             
         }
-        return res+1; 
+
+        return res+1;
     }
     
     vector<int> kWeakestRows(vector<vector<int>>& mat, int k) {
+
         int m = mat.size();
         int n = mat[0].size();
         
-        vector<P> countOnes; 
-    
+        priority_queue<P> pq;
+        
         for(int row = 0; row < m; row++) {
             
             int num_ones = binarySearch(mat[row], 0, n-1); 
             
-            countOnes.push_back({num_ones, row});
+            pq.push({num_ones, row});
+            
+            if(pq.size() > k)
+                pq.pop();
+
         }
-        
-        sort(begin(countOnes), end(countOnes)); 
+       
         
         vector<int> res(k);
-        
-        for(int i = 0; i < k; i++) {
-            res[i] = countOnes[i].second;
-        }
+        int j = k-1;
+
+        while(!pq.empty()) {
+            P temp = pq.top();
+            pq.pop();
+            
+            res[j--] = temp.second;
+         }
         
         return res;
     }
