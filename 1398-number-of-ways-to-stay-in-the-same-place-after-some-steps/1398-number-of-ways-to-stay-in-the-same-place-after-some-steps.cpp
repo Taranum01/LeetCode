@@ -29,7 +29,7 @@ public:
     
     int numWays(int steps, int arrLen) {
         
-        arrLen = min(arrLen, steps);
+        arrLen = min(arrLen, steps/2+1);
         
         n = arrLen;
 
