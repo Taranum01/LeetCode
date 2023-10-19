@@ -1,31 +1,52 @@
 class Solution {
 public:
     bool backspaceCompare(string s, string t) {
+
+        int m = s.length();
+        int n = t.length();
         
-        string res1="", res2="";
-        int i=0;
+        int i = m-1, j = n-1;
         
-        while(s[i]!='\0'){
-            if(s[i]>='a' && s[i]<='z')
-                res1+=s[i];
-            else if(!res1.empty())
-                res1.pop_back();
-            i++;
+        int skip_s = 0;
+        int skip_t = 0;
+        
+        while(i >= 0 || j >= 0) {
+            
+            while(i >= 0) {
+                if(s[i] == '#') {
+                    skip_s++;
+                    i--;
+                } else if(skip_s > 0) {
+                    skip_s--;
+                    i--;
+                } else {
+                    break;
+                }
+            }
+            
+            while(j >= 0) {
+                if(t[j] == '#') {
+                    skip_t++;
+                    j--;
+                } else if(skip_t > 0) {
+                    skip_t--;
+                    j--;
+                } else {
+                    break;
+                }
+            }
+            
+            char first  = i < 0 ? '$' : s[i];
+            char second = j < 0 ? '$' : t[j];
+            
+            if(first != second)
+                return false;
+            
+            i--;
+            j--;
         }
         
-        i=0;
-        
-        while(t[i]!='\0'){
-            if(t[i]>='a' && t[i]<='z')
-                res2+=t[i];
-            else if(!res2.empty())
-                res2.pop_back();
-            i++;
-        }
-        
-        if(res1.compare(res2)==0)
         return true;
-        return false;
         
     }
 };
