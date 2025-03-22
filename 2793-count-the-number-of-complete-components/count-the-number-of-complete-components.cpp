@@ -1,19 +1,29 @@
 class Solution {
 public:
 
-    void dfs(int i, unordered_map<int, vector<int>>& adj, vector<bool>& visited, int& v, int& e) {
+    void bfs(int i, unordered_map<int, vector<int>>& adj, vector<bool>& visited, int& v, int &e) {
+
+        queue<int> q;
+        q.push(i);
 
         visited[i] = true;
-        v++;
-        e += adj[i].size();
 
-        for(int &n : adj[i]) {
-            if(!visited[n]) {
-                dfs(n, adj, visited, v, e);
+        while(!q.empty()) {
+            int curr = q.front();
+            q.pop();
+            v++;
+            e += adj[curr].size();
+
+            for(int &n : adj[curr]) {
+                if(!visited[n]) {
+                    visited[n] = true;
+                    q.push(n);
+                }
             }
         }
     }
     int countCompleteComponents(int n, vector<vector<int>>& edges) {
+
         unordered_map<int, vector<int>> adj;
 
         int res = 0;
@@ -34,7 +44,7 @@ public:
             }
             int v = 0;
             int e = 0;
-            dfs(i, adj, visited, v, e);
+            bfs(i, adj, visited, v, e);
 
             if((v*(v-1)) == e) {
                 res++;
