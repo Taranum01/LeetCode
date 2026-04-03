@@ -1,32 +1,26 @@
 class Solution {
 public:
-    bool isHappy(int n) {
+    int getNext(int n) {
+
+        int sum = 0;
         
-        set<int>myset;
-        int val;
-        int index;
-        
-        while(1)
-        {
-            val=0;
-            while(n)
-            {
-                index=n%10;
-                val+=index*index;
-                n/=10;
-                
-            }
-            
-            if(val==1)
-                return true;
-            else if(myset.find(val)!=myset.end())
-                return false;
-            
-            myset.insert(val);
-            n=val;
-                
+        while (n > 0) {
+            int digit = n % 10;
+            sum += digit * digit;
+            n /= 10;
         }
-        return false;
-        
+        return sum;
+    }
+
+    bool isHappy(int n) {
+
+        unordered_set<int> s;
+
+        while (n != 1 && s.find(n) == s.end()) {
+            s.insert(n);
+            n = getNext(n);
+        }
+
+        return n == 1;
     }
 };
